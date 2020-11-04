@@ -7,26 +7,29 @@ class ViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _loadImagePaths(context),
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<List<String>> imagePathsSnapshot,
-      ) {
-        if (imagePathsSnapshot.connectionState == ConnectionState.done &&
-            imagePathsSnapshot.hasData) {
-          return CustomScrollView(
-            slivers: <Widget>[
-              SliverPadding(
-                padding: const EdgeInsets.all(10),
-                sliver: _buildContent(imagePathsSnapshot.data),
-              ),
-            ],
-          );
-        }
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: FutureBuilder(
+        future: _loadImagePaths(context),
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<List<String>> imagePathsSnapshot,
+        ) {
+          if (imagePathsSnapshot.connectionState == ConnectionState.done &&
+              imagePathsSnapshot.hasData) {
+            return CustomScrollView(
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: const EdgeInsets.all(10),
+                  sliver: _buildContent(imagePathsSnapshot.data),
+                ),
+              ],
+            );
+          }
 
-        return Center(child: CircularProgressIndicator());
-      },
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 
@@ -34,10 +37,11 @@ class ViewPage extends StatelessWidget {
 
   SliverGrid _buildContent(List<String> imagePaths) {
     return SliverGrid(
+      //Color: Colors.white,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 150,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
+        maxCrossAxisExtent: 200,
+        mainAxisSpacing: 5,
+        crossAxisSpacing: 5,
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
@@ -48,6 +52,7 @@ class ViewPage extends StatelessWidget {
     );
   }
 
+//cara ambil gambar dalam folder assets/images
   Future<List<String>> _loadImagePaths(BuildContext context) async {
     final String manifestContentJson =
         await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
@@ -59,22 +64,21 @@ class ViewPage extends StatelessWidget {
         .toList();
   }
 
+//
   Widget _buildImageWidget(String imagePath) {
     return Container(
-      color: Colors.white,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.white,
-            offset: Offset(2, 2),
-            spreadRadius: 2,
-            blurRadius: 5,
+            offset: Offset(1, 1),
+            spreadRadius: 1,
+            blurRadius: 1,
           ),
         ],
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(5)),
         child: Image.asset(
           imagePath,
           fit: BoxFit.cover,
